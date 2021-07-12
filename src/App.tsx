@@ -13,7 +13,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Container, Grid, Paper} from '@material-ui/core';
 
 export type FilterValuesType = 'ALL' | 'ACTIVE' | 'COMPLETED';
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -34,9 +34,10 @@ const App = () => {
             {id: v1(), title: 'ReactJS', isDone: false}
         ],
         [toDoListId2]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false}
+            {id: v1(), title: 'Meat', isDone: true},
+            {id: v1(), title: 'Pencil', isDone: true},
+            {id: v1(), title: 'Bread', isDone: false},
+            {id: v1(), title: 'Milk', isDone: false}
         ],
 
     });
@@ -128,14 +129,14 @@ const App = () => {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        News
+                        Todolists
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
 
             <Container fixed style={{"padding": "20px"}}>
-                <Grid container>
+                <Grid container style={{"padding": "0 0 20px 0"}}>
                     <AddItemForm addItem={addToDoList}/>
                 </Grid>
                 <Grid container spacing={3}>

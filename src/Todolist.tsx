@@ -62,7 +62,7 @@ export const Todolist: FC<PropsType> = (props) => {
         const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => changeTaskStatus(task.id, event.currentTarget.checked, id)
         const changeTaskTitleHandler = (title: string) => changeTaskTitle(title, id, task.id);
 
-        return (<div className={task.isDone ? 'is-done' : ''} key={task.id}>
+        return (<div key={task.id}>
                 <Checkbox
                     checked={task.isDone}
                     onChange={onChangeHandler}
@@ -75,29 +75,33 @@ export const Todolist: FC<PropsType> = (props) => {
                 </IconButton>
             </div>
         )
+
     });
 
     return (
         <div>
             <h3><EditableSpan title={title} onChange={onChangeToDoListTitleHandler}/>
-                <IconButton onClick={deleteTodoListHandler}>
+                <IconButton  onClick={deleteTodoListHandler}>
                     <DeleteIcon/>
                 </IconButton>
             </h3>
             <AddItemForm addItem={addTaskHandler}/>
             <ul>
-                {tasksToDisplay}
+                {tasksToDisplay.length ? tasksToDisplay : 'There is nothing'}
             </ul>
             <div>
-                <Button variant={filter === 'ALL' ? 'contained' : 'text'}
+                <Button size={'small'}
+                        variant={filter === 'ALL' ? 'contained' : 'text'}
                         onClick={onAllClickHandler}>All</Button>
 
-                <Button variant={filter === 'ACTIVE' ? 'contained' : 'text'}
+                <Button size={'small'}
+                        variant={filter === 'ACTIVE' ? 'contained' : 'text'}
                         color={'primary'}
                         onClick={onActiveClickHandler}>Active
                 </Button>
 
-                <Button variant={filter === 'COMPLETED' ? 'contained' : 'text'}
+                <Button size={'small'}
+                        variant={filter === 'COMPLETED' ? 'contained' : 'text'}
                         color={'secondary'}
                         onClick={onCompletedClickHandler}>Completed
                 </Button>
