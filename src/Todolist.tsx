@@ -81,7 +81,7 @@ export const Todolist: FC<PropsType> = (props) => {
     return (
         <div>
             <h3><EditableSpan title={title} onChange={onChangeToDoListTitleHandler}/>
-                <IconButton  onClick={deleteTodoListHandler}>
+                <IconButton onClick={deleteTodoListHandler}>
                     <DeleteIcon/>
                 </IconButton>
             </h3>

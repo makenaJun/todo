@@ -18,11 +18,12 @@ export type TodolistType = {
     title: string
     filter: FilterValuesType
 }
-type TasksStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
 const App = () => {
+
     let toDoListId1 = v1();
     let toDoListId2 = v1();
 
@@ -135,8 +136,8 @@ const App = () => {
                 </Toolbar>
             </AppBar>
 
-            <Container fixed style={{"padding": "20px"}}>
-                <Grid container style={{"padding": "0 0 20px 0"}}>
+            <Container fixed style={{'padding': '20px'}}>
+                <Grid container style={{'padding': '0 0 20px 0'}}>
                     <AddItemForm addItem={addToDoList}/>
                 </Grid>
                 <Grid container spacing={3}>
@@ -155,26 +156,26 @@ const App = () => {
                         }
                         return (
                             <Grid item>
-                                <Paper style={{"padding": "10px"}}>
-                                <Todolist key={toDoList.id}
-                                                 id={toDoList.id}
-                                                 title={toDoList.title}
-                                                 deleteToDoList={deleteToDoList}
-                                                 changeTaskStatus={changeStatus}
-                                                 tasks={tasksFoTodolist}
-                                                 addTask={addTask}
-                                                 deleteTask={deleteTask}
-                                                 changeFilter={changeFilter}
-                                                 changeTaskTitle={changeTaskTitle}
-                                                 changeToDoListTitle={changeToDoListTitle}
-                                                 filter={toDoList.filter}/>
+                                <Paper style={{'padding': '10px'}}>
+                                    <Todolist key={toDoList.id}
+                                              id={toDoList.id}
+                                              title={toDoList.title}
+                                              deleteToDoList={deleteToDoList}
+                                              changeTaskStatus={changeStatus}
+                                              tasks={tasksFoTodolist}
+                                              addTask={addTask}
+                                              deleteTask={deleteTask}
+                                              changeFilter={changeFilter}
+                                              changeTaskTitle={changeTaskTitle}
+                                              changeToDoListTitle={changeToDoListTitle}
+                                              filter={toDoList.filter}/>
                                 </Paper>
                             </Grid>)
                     })}
                 </Grid>
             </Container>
         </div>
-);
+    );
 }
 
 export default App;
