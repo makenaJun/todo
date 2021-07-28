@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (title: string) => void,
 }
 export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
 
@@ -26,7 +26,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
     };
     const onChangeTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(event.currentTarget.value);
-        setError(null)
+        setError(null);
     };
 
     return (

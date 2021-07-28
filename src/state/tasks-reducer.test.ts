@@ -1,7 +1,14 @@
 import {v1} from 'uuid';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer';
-import {TasksStateType} from '../App';
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    tasksReducer,
+    TasksStateType
+} from './tasks-reducer';
 import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
+
 
 let toDoListId1: string;
 let toDoListId2: string;
@@ -10,7 +17,7 @@ let taskId1: string;
 let taskId2: string;
 let taskId3: string;
 
-let startState: TasksStateType
+let startState: TasksStateType;
 
 beforeEach(() => {
     toDoListId1 = v1();
@@ -31,10 +38,10 @@ beforeEach(() => {
             {id: v1(), title: 'Pencil', isDone: true},
             {id: v1(), title: 'Bread', isDone: false},
             {id: v1(), title: 'Milk', isDone: false}
-        ]
-    }
+        ],
+    };
 
-})
+});
 
 describe('Tasks', () => {
     it('correct task should be removed', () => {
@@ -76,7 +83,7 @@ describe('Tasks', () => {
     });
 
     it('correct isDone should be changed', () => {
-        const action = changeTaskStatusAC(toDoListId1, taskId2, false)
+        const action = changeTaskStatusAC(toDoListId1, taskId2, false);
 
         const endState = tasksReducer(startState, action);
 
@@ -89,7 +96,7 @@ describe('Tasks', () => {
     });
 
     it('new array should be added when new todolist is added', () => {
-        const newTodolist = 'title no matter'
+        const newTodolist = 'title no matter';
 
         const endState = tasksReducer(startState, addTodolistAC(newTodolist));
 
@@ -113,6 +120,6 @@ describe('Tasks', () => {
 
         expect(startState).not.toBe(endState);
         expect(keys.length).toBe(1);
-        expect(endState[toDoListId1]).toBeUndefined()
+        expect(endState[toDoListId1]).toBeUndefined();
     });
-})
+});

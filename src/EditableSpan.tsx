@@ -1,9 +1,9 @@
-import React, {ChangeEvent, FC, FocusEvent, MouseEvent, useState} from 'react';
+import React, {ChangeEvent, FC, FocusEvent, useState} from 'react';
 import {TextField} from '@material-ui/core';
 
 type PropsType = {
-    title: string
-    onChange: (title: string) => void
+    title: string,
+    onChange: (title: string) => void,
 }
 export const EditableSpan: FC<PropsType> = (props) => {
     const {title, onChange} = props;
@@ -11,7 +11,7 @@ export const EditableSpan: FC<PropsType> = (props) => {
     const [localTitle, setLocalTitle] = useState('');
 
     const activateEditMode = () => {
-        setLocalTitle(title)
+        setLocalTitle(title);
         setEditMode(true);
     };
     const deactivateEditMode = (event: FocusEvent<HTMLInputElement>) => {

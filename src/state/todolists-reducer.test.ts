@@ -1,16 +1,16 @@
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC,
+    changeTodolistTitleAC, FilterValuesType,
     removeTodolistAC,
-    todolistsReducer
+    todolistsReducer, ToDoListsStateType
 } from './todolists-reducer';
 import {v1} from 'uuid';
-import {FilterValuesType, TodolistType} from '../App';
+
 
 let toDoListId1: string;
 let toDoListId2: string;
-let startState: Array<TodolistType>;
+let startState: ToDoListsStateType;
 
 beforeEach(() => {
     toDoListId1 = v1();
@@ -18,14 +18,13 @@ beforeEach(() => {
 
     startState = [
         {id: toDoListId1, title: 'What to learn', filter: 'ALL'},
-        {id: toDoListId2, title: 'What to buy', filter: 'ALL'}
-    ]
-})
+        {id: toDoListId2, title: 'What to buy', filter: 'ALL'},
+    ];
+});
 
 
 describe('toDo Lists', () => {
     it('correct todolist should be removed', () => {
-
         const endState = todolistsReducer(startState, removeTodolistAC(toDoListId1));
 
         expect(startState).not.toBe(endState);
@@ -34,7 +33,7 @@ describe('toDo Lists', () => {
     });
 
     it('correct todolist should be added', () => {
-        const newTodolist = 'New todolist'
+        const newTodolist = 'New todolist';
 
         const endState = todolistsReducer(startState, addTodolistAC(newTodolist));
 
@@ -45,7 +44,7 @@ describe('toDo Lists', () => {
     });
 
     it('correct todolist should change its title', () => {
-        const newTitle = 'New todolist'
+        const newTitle = 'New todolist';
 
         const endState = todolistsReducer(startState, changeTodolistTitleAC(toDoListId1, newTitle));
 
@@ -56,7 +55,7 @@ describe('toDo Lists', () => {
     });
 
     it('correct filter should be changed', () => {
-        const newFilter: FilterValuesType = 'COMPLETED'
+        const newFilter: FilterValuesType = 'COMPLETED';
 
         const endState = todolistsReducer(startState, changeTodolistFilterAC(toDoListId1, newFilter));
 
@@ -64,5 +63,5 @@ describe('toDo Lists', () => {
         expect(endState.length).toBe(2);
         expect(endState[0].filter).toBe(newFilter);
         expect(endState[1].filter).toBe('ALL');
-    })
-})
+    });
+});
