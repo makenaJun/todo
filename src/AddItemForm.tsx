@@ -6,7 +6,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 type AddItemFormPropsType = {
     addItem: (title: string) => void,
 }
-export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
+export const AddItemForm: FC<AddItemFormPropsType> = React.memo((props) => {
 
     const [title, setNewTitle] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -26,7 +26,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
     };
     const onChangeTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(event.currentTarget.value);
-        setError(null);
+        if (error !== null){
+            setError(null);
+        }
     };
 
     return (
@@ -44,4 +46,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = (props) => {
             </IconButton>
         </div>
     )
-}
+})

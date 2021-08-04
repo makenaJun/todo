@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
@@ -26,21 +26,21 @@ const App = () => {
     const dispatch = useDispatch();
     const toDoLists = useSelector<AppStateType, ToDoListsStateType>(state => state.toDoLists);
 
-    const deleteToDoList = (toDoListId: string) => {
+    const deleteToDoList = useCallback((toDoListId: string) => {
         dispatch(removeTodolistAC(toDoListId));
-    };
+    }, [dispatch]);
 
-    const changeToDoListTitle = (toDoListId: string, title: string) => {
+    const changeToDoListTitle =  useCallback((toDoListId: string, title: string) => {
         dispatch(changeTodolistTitleAC(toDoListId, title));
-    };
+    }, [dispatch]);
 
-    const changeFilter = (toDoListId: string, filter: FilterValuesType,) => {
+    const changeFilter =  useCallback((toDoListId: string, filter: FilterValuesType,) => {
         dispatch(changeTodolistFilterAC(toDoListId, filter));
-    };
+    }, [dispatch]);
 
-    const addToDoList = (title: string) => {
+    const addToDoList =  useCallback((title: string) => {
         dispatch(addTodolistAC(title));
-    };
+    }, [dispatch]);
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -76,7 +76,7 @@ const App = () => {
                 <Grid container spacing={3}>
                     {toDoLists.map((toDoList) => {
                         return (
-                            <Grid item>
+                            <Grid item key={toDoList.id}>
                                 <Paper style={{'padding': '10px'}}>
                                     <Todolist key={toDoList.id}
                                               id={toDoList.id}
