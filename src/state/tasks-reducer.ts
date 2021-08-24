@@ -1,12 +1,6 @@
 import {v1} from 'uuid';
 import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
-
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean
-};
-
+import {TaskPriorities, TaskStatuses, TaskType} from '../api/todolists-api';
 
 type ActionsType =
     ReturnType<typeof removeTaskAC>
@@ -34,7 +28,19 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'ADD-TASK': {
             return {
                 ...state,
-                [action.toDoListId]: [{id: v1(), title: action.title, isDone: false}, ...state[action.toDoListId]],
+                [action.toDoListId]: [{
+                    id: v1(),
+                    title: action.title,
+                    status: TaskStatuses.New,
+                    priority: TaskPriorities.Low,
+                    addedDate: '',
+                    startDate: '',
+                    deadline: '',
+                    description: '',
+                    todoListId: action.toDoListId,
+                    completed: false,
+                    order: 0
+                }, ...state[action.toDoListId]],
             };
         }
         case 'CHANGE-TASK-TITLE': {
@@ -51,7 +57,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
                 ...state,
                 [action.toDoListId]: state[action.toDoListId].map(t => t.id === action.taskId ? {
                     ...t,
-                    isDone: action.isDone
+                    status: action.status,
                 } : t)
             };
         }
@@ -96,12 +102,12 @@ export const changeTaskTitleAC = (toDoListId: string, taskId: string, newTitle: 
     } as const;
 };
 
-export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: boolean) => {
+export const changeTaskStatusAC = (toDoListId: string, taskId: string, status: TaskStatuses) => {
     return {
         type: 'CHANGE-TASK-STATUS',
         toDoListId,
         taskId,
-        isDone,
+        status,
     } as const;
 };
 

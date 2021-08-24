@@ -5,11 +5,12 @@ import {EditableSpan} from './EditableSpan';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Button} from '@material-ui/core';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TaskType} from './state/tasks-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
 import {FilterValuesType} from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
 import {Task} from './Task';
+import {TaskStatuses, TaskType} from './api/todolists-api';
 
 type PropsType = {
     id: string,
@@ -40,8 +41,8 @@ export const Todolist: FC<PropsType> = React.memo((props) => {
         dispatch(changeTaskTitleAC(id, taskId, title));
     }, [dispatch, id]);
 
-    const changeTaskStatusHandler = useCallback((taskId: string, checked: boolean) => {
-        dispatch(changeTaskStatusAC(id, taskId, checked));
+    const changeTaskStatusHandler = useCallback((taskId: string, status: TaskStatuses) => {
+        dispatch(changeTaskStatusAC(id, taskId, status));
     }, [dispatch, id]);
 
     const removeTaskHandler = useCallback((taskId: string) => dispatch(removeTaskAC(id, taskId)), [dispatch, id]);
@@ -64,10 +65,10 @@ export const Todolist: FC<PropsType> = React.memo((props) => {
             filteredTasks = tasks;
             break;
         case 'ACTIVE':
-            filteredTasks = tasks.filter(t => !t.isDone);
+            filteredTasks = tasks.filter(t => t.status === TaskStatuses.New);
             break;
         case 'COMPLETED':
-            filteredTasks = tasks.filter(t => t.isDone);
+            filteredTasks = tasks.filter(t => t.status === TaskStatuses.Completed);
             break;
     }
 

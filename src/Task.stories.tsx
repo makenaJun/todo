@@ -2,7 +2,7 @@ import React from 'react';
 import {action} from '@storybook/addon-actions';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {Task} from './Task';
-import {TaskType} from './state/tasks-reducer';
+import {TaskPriorities, TaskStatuses, TaskType} from './api/todolists-api';
 
 
 export default {
@@ -16,8 +16,12 @@ const removeTaskCallback = action(`Task removed`);
 
 
 const Template: ComponentStory<typeof Task> = () => {
-    const task1: TaskType = {id: '1', title: 'Hello', isDone: false};
-    const task2: TaskType = {id: '2', title: 'World', isDone: true};
+    const task1: TaskType = {id: '1', title: 'Hello', status: TaskStatuses.New, completed: false,
+        addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+        deadline: '', description: '', todoListId: 'todolistId2'};
+    const task2: TaskType = {id: '2', title: 'World', status: TaskStatuses.Completed, completed: false,
+        addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+        deadline: '', description: '', todoListId: 'todolistId2'};
 
 
     return <>

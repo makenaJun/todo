@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {todolistsApi, UpdateTaskType} from '../api/todolists-api';
+import {TaskPriorities, TaskStatuses, todolistsApi, UpdateTaskType} from '../api/todolists-api';
 
 
 export default {
@@ -23,7 +23,7 @@ export const GetTodoLists = () => {
     )
 };
 
-export const CreateTodoLists = () => {
+export const CreateTodoList = () => {
     const [state, setState] = useState<any>(null);
     const [title, setTitle] = useState<string>('');
 
@@ -49,7 +49,7 @@ export const CreateTodoLists = () => {
     )
 };
 
-export const DeleteTodoLists = () => {
+export const DeleteTodoList = () => {
     const [state, setState] = useState<any>(null);
     const [todolistId, setTodolistId] = useState<string>('');
 
@@ -75,7 +75,7 @@ export const DeleteTodoLists = () => {
     )
 };
 
-export const UpdateTodoListsTitle = () => {
+export const UpdateTodoListTitle = () => {
     const [state, setState] = useState<any>(null);
     const [todolistId, setTodolistId] = useState<string>('');
     const [title, setTitle] = useState<string>('');
@@ -165,12 +165,12 @@ export const DeleteTasks = () => {
     )
 };
 
-export const CreateTasks = () => {
+export const CreateTask = () => {
     const [state, setState] = useState<any>(null);
     const [taskTitle, setTaskTitle] = useState<string>('');
     const [todolistId, setTodolistId] = useState<string>('');
 
-    const createTodoList = () => {
+    const createTaskHandler = () => {
         todolistsApi.createTask(todolistId, taskTitle)
             .then(data => {
                 setState(data);
@@ -190,27 +190,30 @@ export const CreateTasks = () => {
                        placeholder={'Task Title'}
                        value={taskTitle}
                        onChange={(e) => setTaskTitle(e.currentTarget.value)}/>
-                <button onClick={createTodoList}>Create Task</button>
+                <button onClick={createTaskHandler}>Create Task</button>
             </div>
         </div>
     )
 };
 
-export const UpdateTasks = () => {
+export const UpdateTask = () => {
     const [state, setState] = useState<any>(null);
     const [todolistId, setTodolistId] = useState<string>('');
     const [taskId, setTaskId] = useState<string>('');
     const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [priority, setPriority] = useState<TaskPriorities>(TaskPriorities.Low);
+    const [status, setStatus] = useState<TaskStatuses>(TaskStatuses.Completed);
 
     const updateTaskTitle = () => {
         const payload: UpdateTaskType = {
             title: title,
             completed: true,
             deadline: '2021-08-19T13:12:11.577',
-            description: '',
-            priority: 2,
+            description: description,
+            priority: priority,
             startDate: '2021-08-19T13:12:11.577',
-            status: 1,
+            status: status,
         };
 
         todolistsApi.updateTask(todolistId, taskId, payload)
@@ -238,7 +241,93 @@ export const UpdateTasks = () => {
                        value={title}
                        onChange={(e) => setTitle(e.currentTarget.value)}
                 />
+                <input type="text"
+                       placeholder={'Description'}
+                       value={description}
+                       onChange={(e) => setDescription(e.currentTarget.value)}
+                />
+                <input type="number"
+                       placeholder={'Priority'}
+                       value={priority}
+                       onChange={(e) => setPriority(+e.currentTarget.value)}
+                />
+                <input type="number"
+                       placeholder={'Status'}
+                       value={status}
+                       onChange={(e) => setStatus(+e.currentTarget.value)}
+                />
                 <button onClick={updateTaskTitle}>Update task</button>
+            </div>
+        </div>
+    )
+};
+
+export const TaskReorder = () => {
+    const [state, setState] = useState<any>(null);
+    const [todolistId, setTodolistId] = useState<string>('');
+    const [taskId, setTaskId] = useState<string>('');
+    const [itemId, setItemId] = useState<string>('');
+
+
+    const reorderTaskHandler = () => {
+        todolistsApi.reorderTask(todolistId, taskId, itemId)
+            .then(data => {
+                setState(data);
+            });
+    };
+
+    return (
+        <div>
+            {JSON.stringify(state)}
+            <div>
+                <input type="text"
+                       placeholder={'Todolist ID'}
+                       value={todolistId}
+                       onChange={(e) => setTodolistId(e.currentTarget.value)}
+                />
+                <input type="text"
+                       placeholder={'Task ID'}
+                       value={taskId}
+                       onChange={(e) => setTaskId(e.currentTarget.value)}
+                />
+                <input type="text"
+                       placeholder={'Put After Item Id'}
+                       value={itemId}
+                       onChange={(e) => setItemId(e.currentTarget.value)}
+                />
+                <button onClick={reorderTaskHandler}>Update task</button>
+            </div>
+        </div>
+    )
+};
+
+export const TodolistReorder = () => {
+    const [state, setState] = useState<any>(null);
+    const [todolistId, setTodolistId] = useState<string>('');
+    const [itemId, setItemId] = useState<string>('');
+
+    const reorderTodolistHandler = () => {
+        todolistsApi.reorderTodolist(todolistId, itemId)
+            .then(data => {
+                setState(data);
+            });
+    };
+
+    return (
+        <div>
+            {JSON.stringify(state)}
+            <div>
+                <input type="text"
+                       placeholder={'Todolist ID'}
+                       value={todolistId}
+                       onChange={(e) => setTodolistId(e.currentTarget.value)}
+                />
+                <input type="text"
+                       placeholder={'Put After Item Id'}
+                       value={itemId}
+                       onChange={(e) => setItemId(e.currentTarget.value)}
+                />
+                <button onClick={reorderTodolistHandler}>Update task</button>
             </div>
         </div>
     )

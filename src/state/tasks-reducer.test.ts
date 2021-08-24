@@ -8,6 +8,7 @@ import {
     TasksStateType
 } from './tasks-reducer';
 import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
+import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
 
 
 let toDoListId1: string;
@@ -29,15 +30,29 @@ beforeEach(() => {
 
     startState = {
         [toDoListId1]: [
-            {id: taskId1, title: 'HTML&CSS', isDone: true},
-            {id: taskId2, title: 'JS', isDone: true},
-            {id: taskId3, title: 'ReactJS', isDone: false}
+            {id: taskId1, title: 'HTML&CSS', status: TaskStatuses.Completed, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId1},
+            {id: taskId2, title: 'JS', status: TaskStatuses.Completed, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId1},
+            {id: taskId3, title: 'ReactJS', status: TaskStatuses.New, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId1}
         ],
         [toDoListId2]: [
-            {id: v1(), title: 'Meat', isDone: true},
-            {id: v1(), title: 'Pencil', isDone: true},
-            {id: v1(), title: 'Bread', isDone: false},
-            {id: v1(), title: 'Milk', isDone: false}
+            {id: v1(), title: 'Meat',  status: TaskStatuses.Completed, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId2},
+            {id: v1(), title: 'Pencil',  status: TaskStatuses.Completed, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId2},
+            {id: v1(), title: 'Bread',  status: TaskStatuses.New, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId2},
+            {id: v1(), title: 'Milk',  status: TaskStatuses.New, completed: false,
+                addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                deadline: '', description: '', todoListId: toDoListId2}
         ],
     };
 
@@ -66,7 +81,7 @@ describe('Tasks', () => {
         expect(endState[toDoListId2].length).toBe(4);
         expect(endState[toDoListId1][0].id).toBeDefined();
         expect(endState[toDoListId1][0].title).toBe('New task');
-        expect(endState[toDoListId1][0].isDone).toBeFalsy();
+        expect(endState[toDoListId1][0].status).toBe(TaskStatuses.New);
     });
 
     it('correct task should change its title', () => {
@@ -77,13 +92,12 @@ describe('Tasks', () => {
         expect(startState).not.toBe(endState);
         expect(endState[toDoListId1].length).toBe(3);
         expect(endState[toDoListId1][0].title).toBe('HTML and CSS');
-        expect(endState[toDoListId1][0].isDone).toBeTruthy();
         expect(endState[toDoListId1][1].title).toBe('JS');
         expect(endState[toDoListId1][2].title).toBe('ReactJS');
     });
 
-    it('correct isDone should be changed', () => {
-        const action = changeTaskStatusAC(toDoListId1, taskId2, false);
+    it('correct status should be changed', () => {
+        const action = changeTaskStatusAC(toDoListId1, taskId2, TaskStatuses.New);
 
         const endState = tasksReducer(startState, action);
 
@@ -91,8 +105,8 @@ describe('Tasks', () => {
         expect(startState[toDoListId1][1]).not.toBe(endState[toDoListId1][1]);
         expect(endState[toDoListId1].length).toBe(3);
         expect(endState[toDoListId1][1].title).toBe('JS');
-        expect(startState[toDoListId1][1].isDone).toBeTruthy();
-        expect(endState[toDoListId1][1].isDone).toBeFalsy();
+        expect(startState[toDoListId1][1].status).toBe(TaskStatuses.Completed);
+        expect(endState[toDoListId1][1].status).toBe(TaskStatuses.New);
     });
 
     it('new array should be added when new todolist is added', () => {

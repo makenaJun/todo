@@ -1,12 +1,11 @@
 import {v1} from 'uuid';
+import {TodolistType} from '../api/todolists-api';
 
 export type FilterValuesType = 'ALL' | 'ACTIVE' | 'COMPLETED';
 
-export type TodolistType = {
-    id: string,
-    title: string,
+export type TodolistDomainType =  TodolistType & {
     filter: FilterValuesType,
-}
+};
 
 type ActionsType =
     ReturnType<typeof removeTodolistAC>
@@ -14,7 +13,7 @@ type ActionsType =
     | ReturnType<typeof changeTodolistTitleAC>
     | ReturnType<typeof changeTodolistFilterAC>
 
-export type ToDoListsStateType = Array<TodolistType>;
+export type ToDoListsStateType = Array<TodolistDomainType>;
 
 const initialState: ToDoListsStateType = [];
 
@@ -24,7 +23,13 @@ export const todolistsReducer = (state: ToDoListsStateType = initialState, actio
             return state.filter(tl => tl.id !== action.id);
         }
         case 'ADD-TODOLIST': {
-            return [{id: action.todoListId, title: action.title, filter: 'ALL'}, ...state];
+            return [{
+                id: action.todoListId,
+                title: action.title,
+                filter: 'ALL',
+                order: 0,
+                addedDate: '',
+            }, ...state];
         }
         case 'CHANGE-TODOLIST-TITLE': {
             return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl);

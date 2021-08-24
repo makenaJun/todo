@@ -12,21 +12,36 @@ type CreateTodolistDataType = {
 };
 
 type CreateTaskDataType = {
-    item: TaskItemType,
+    item: TaskType,
 };
 
 type GetTasksResponseType = {
-    items: Array<TaskItemType>,
+    items: Array<TaskType>,
     totalCount: number,
     error: string | null,
 };
 
-export type TaskItemType = {
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3,
+};
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4,
+};
+
+export type TaskType = {
     description: string,
     title: string,
     completed: boolean,
-    status: number,
-    priority: number,
+    status: TaskStatuses,
+    priority: TaskPriorities,
     startDate: string,
     deadline: string,
     id: string,
@@ -72,6 +87,11 @@ export const todolistsApi = {
             .then(res => res.data)
             .catch((err) => console.warn(`TodolistApi update Todolist ${err}`));
     },
+    reorderTodolist(todolistId: string, putAfterItemId: string) {
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/reorder`, putAfterItemId)
+            .then(res => res.data)
+            .catch((err) => console.warn(`TodolistApi reorder Todolist ${err}`));
+    },
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks`)
             .then(res => res.data)
@@ -94,5 +114,10 @@ export const todolistsApi = {
         return instance.put<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, payload)
             .then(res => res.data)
             .catch((err) => console.warn(`TodolistApi update Tasks ${err}`));
+    },
+    reorderTask(todolistId: string, taskId: string, putAfterItemId: string) {
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}/reorder`, putAfterItemId)
+            .then(res => res.data)
+            .catch((err) => console.warn(`TodolistApi reorder Tasks ${err}`));
     },
 };
