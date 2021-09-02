@@ -11,8 +11,8 @@ export const GetTodoLists = () => {
 
     useEffect(() => {
         todolistsApi.getTodolists()
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     }, []);
 
@@ -29,8 +29,8 @@ export const CreateTodoList = () => {
 
     const createTodoList = () => {
         todolistsApi.createTodolist(title)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -55,8 +55,8 @@ export const DeleteTodoList = () => {
 
     const deleteTodolistHandler = () => {
         todolistsApi.deleteTodolist(todolistId)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -82,8 +82,8 @@ export const UpdateTodoListTitle = () => {
 
     const updateTodolistHandler = () => {
         todolistsApi.updateTodolist(todolistId, title)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -113,8 +113,8 @@ export const GetTasks = () => {
 
     const getTaskHandler = () => {
         todolistsApi.getTasks(todolistId)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -140,8 +140,8 @@ export const DeleteTasks = () => {
 
     const deleteTaskHandler = () => {
         todolistsApi.deleteTask(todolistId, taskId)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -172,8 +172,8 @@ export const CreateTask = () => {
 
     const createTaskHandler = () => {
         todolistsApi.createTask(todolistId, taskTitle)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -217,8 +217,8 @@ export const UpdateTask = () => {
         };
 
         todolistsApi.updateTask(todolistId, taskId, payload)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -271,8 +271,8 @@ export const TaskReorder = () => {
 
     const reorderTaskHandler = () => {
         todolistsApi.reorderTask(todolistId, taskId, itemId)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 
@@ -308,8 +308,8 @@ export const TodolistReorder = () => {
 
     const reorderTodolistHandler = () => {
         todolistsApi.reorderTodolist(todolistId, itemId)
-            .then(data => {
-                setState(data);
+            .then(res => {
+                setState(res.data);
             });
     };
 

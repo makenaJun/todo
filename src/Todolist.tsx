@@ -1,12 +1,12 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import './App.css';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Button} from '@material-ui/core';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
-import {FilterValuesType} from './state/todolists-reducer';
+import {createTask, deleteTask, getTasks, updateTask} from './state/tasks-reducer';
+import {deleteTodolist, FilterValuesType} from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './state/store';
 import {Task} from './Task';
@@ -34,25 +34,29 @@ export const Todolist: FC<PropsType> = React.memo((props) => {
     const dispatch = useDispatch();
     const tasks = useSelector<AppStateType, Array<TaskType>>(state => state.tasks[id]);
 
+    useEffect(() => {
+        dispatch(getTasks(id));
+    }, [dispatch, id]);
+
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTaskAC(id, title));
+        dispatch(createTask(id, title));
     }, [dispatch, id]);
     const changeTaskTitleHandler = useCallback((title: string, taskId: string) => {
-        dispatch(changeTaskTitleAC(id, taskId, title));
+        dispatch(updateTask(id, taskId, {title}));
     }, [dispatch, id]);
 
     const changeTaskStatusHandler = useCallback((taskId: string, status: TaskStatuses) => {
-        dispatch(changeTaskStatusAC(id, taskId, status));
+        dispatch(updateTask(id, taskId, {status}));
     }, [dispatch, id]);
 
-    const removeTaskHandler = useCallback((taskId: string) => dispatch(removeTaskAC(id, taskId)), [dispatch, id]);
+    const removeTaskHandler = useCallback((taskId: string) => dispatch(deleteTask(id, taskId)), [dispatch, id]);
 
 
     const onChangeToDoListTitleHandler = useCallback((title: string) => {
         changeToDoListTitle(id, title);
     }, [changeToDoListTitle, id]);
 
-    const deleteTodoListHandler = useCallback(() => deleteToDoList(id), [deleteToDoList, id]);
+    const deleteTodoListHandler = useCallback(() => dispatch(deleteTodolist(id)), [dispatch, id]);
 
 
     const onAllClickHandler = useCallback(() => changeFilter(id, 'ALL'), [changeFilter, id]);

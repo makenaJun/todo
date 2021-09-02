@@ -8,7 +8,9 @@ describe('Tasks and todoLists', () => {
         const startTaskState: TasksStateType = {};
         const startTodoListsState: ToDoListsStateType = [];
 
-        const action = addTodolistAC('New todolist');
+        const newTodolist = {id: 'toDoListId1', title: 'New todolist', filter: 'ALL', order: 0, addedDate: ''}
+
+        const action = addTodolistAC(newTodolist);
 
         const endTodoListsState = todolistsReducer(startTodoListsState, action);
         const endTasksState = tasksReducer(startTaskState, action);
@@ -17,8 +19,8 @@ describe('Tasks and todoLists', () => {
         const idFromTasks = keys[0];
         const idFromTodoLists = endTodoListsState[0].id;
 
-        expect(idFromTasks).toBe(action.todoListId);
-        expect(idFromTodoLists).toBe(action.todoListId);
+        expect(idFromTasks).toBe(action.todoList.id);
+        expect(idFromTodoLists).toBe(action.todoList.id);
     });
 
     it('property with todolistId should be deleted', () => {

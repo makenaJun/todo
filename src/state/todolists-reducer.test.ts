@@ -2,10 +2,11 @@ import {
     addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC, FilterValuesType,
-    removeTodolistAC,
+    removeTodolistAC, setTodoLists,
     todolistsReducer, ToDoListsStateType
 } from './todolists-reducer';
 import {v1} from 'uuid';
+import {TodolistType} from '../api/todolists-api';
 
 
 let toDoListId1: string;
@@ -33,13 +34,13 @@ describe('toDo Lists', () => {
     });
 
     it('correct todolist should be added', () => {
-        const newTodolist = 'New todolist';
+        const newTodolist = {id: 'toDoListId3', title: 'New todolist', filter: 'ALL', order: 0, addedDate: ''}
 
         const endState = todolistsReducer(startState, addTodolistAC(newTodolist));
 
         expect(startState).not.toBe(endState);
         expect(endState.length).toBe(3);
-        expect(endState[0].title).toBe(newTodolist);
+        expect(endState[0].title).toBe(newTodolist.title);
         expect(endState[0].filter).toBe('ALL');
     });
 
@@ -63,5 +64,22 @@ describe('toDo Lists', () => {
         expect(endState.length).toBe(2);
         expect(endState[0].filter).toBe(newFilter);
         expect(endState[1].filter).toBe('ALL');
+    });
+
+    it('todolists should be set to the state', () => {
+        startState = [];
+
+        const todolists: Array<TodolistType> = [
+            {id: 'TodolistId1', order: 0, addedDate: '', title: 'What to buy'},
+            {id: 'TodolistId2', order: 1, addedDate: '', title: 'What to learn'}
+        ];
+
+        const endState = todolistsReducer(startState, setTodoLists(todolists));
+
+        expect(startState).not.toBe(endState);
+        expect(endState.length).toBe(2);
+        expect(endState[0].title).toBe('What to buy');
+        expect(endState[0].filter).toBe('ALL');
+        expect(endState[1].title).toBe('What to learn');
     });
 });
