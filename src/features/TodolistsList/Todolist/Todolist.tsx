@@ -1,23 +1,22 @@
 import React, {FC, useCallback, useEffect} from 'react';
-import './App.css';
-import {AddItemForm} from './AddItemForm';
-import {EditableSpan} from './EditableSpan';
+import '../../../app/App.css';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Button} from '@material-ui/core';
-import {createTask, deleteTask, getTasks, updateTask} from './state/tasks-reducer';
-import {deleteTodolist, FilterValuesType} from './state/todolists-reducer';
+import {createTask, deleteTask, getTasks, updateTask} from '../tasks-reducer';
+import {deleteTodolist, FilterValuesType} from '../todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppStateType} from './state/store';
-import {Task} from './Task';
-import {TaskStatuses, TaskType} from './api/todolists-api';
+import {AppStateType} from '../../../app/store';
+import {Task} from './Taks/Task';
+import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 
 type PropsType = {
     id: string,
     title: string,
     filter: FilterValuesType,
     changeFilter: (toDoListId: string, filter: FilterValuesType) => void,
-    deleteToDoList: (toDoListId: string) => void,
     changeToDoListTitle: (toDoListId: string, title: string) => void,
 }
 
@@ -27,7 +26,6 @@ export const Todolist: FC<PropsType> = React.memo((props) => {
         title,
         filter,
         changeFilter,
-        deleteToDoList,
         changeToDoListTitle
     } = props;
 

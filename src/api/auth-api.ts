@@ -1,16 +1,6 @@
 import {instance, ResponseType} from './api';
 
-type AuthMeDataType = {
-    id: number,
-    email: string,
-    login: string,
-};
-
-type LoginDataType = {
-    userId: number,
-};
-
-
+// API
 export const authApi = {
     me() {
         return instance.get<ResponseType<AuthMeDataType>>('/auth/me').then(res => res.data);
@@ -28,3 +18,15 @@ export const authApi = {
         return instance.delete<ResponseType>('/auth/login').then(res => res.data);
     },
 }
+
+// TYPES
+
+type AuthMeDataType = {
+    id: number,
+    email: string,
+    login: string,
+};
+
+type LoginDataType = {
+    userId: number,
+};

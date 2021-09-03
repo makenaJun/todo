@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// API
+
 export const instance = axios.create({
     withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
@@ -8,9 +10,12 @@ export const instance = axios.create({
     },
 });
 
+
+// TYPES
+
 export enum ResultCode {
     SUCCESS = 0,
-};
+}
 
 export type ResponseType<D = {}> = {
     data: D,

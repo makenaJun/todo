@@ -1,5 +1,51 @@
 import {instance, ResponseType} from './api';
 
+// API
+
+export const todolistsApi = {
+    getTodolists() {
+        return instance.get<Array<TodolistType>>('/todo-lists');
+    },
+    createTodolist(title: string) {
+        const payload = {
+            title,
+        }
+        return instance.post<ResponseType<CreateTodolistDataType>>('/todo-lists', payload);
+    },
+    deleteTodolist(todolistId: string) {
+        return instance.delete<ResponseType>(`/todo-lists/${todolistId}`);
+    },
+    updateTodolist(todolistId: string, title: string) {
+        const payload = {
+            title,
+        }
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}`, payload);
+    },
+    reorderTodolist(todolistId: string, putAfterItemId: string) {
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/reorder`, putAfterItemId);
+    },
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks`);
+    },
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`);
+    },
+    createTask(todolistId: string, title: string) {
+        const payload = {
+            title,
+        }
+        return instance.post<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks`, payload);
+    },
+    updateTask(todolistId: string, taskId: string, payload: UpdateTaskType) {
+        return instance.put<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, payload);
+    },
+    reorderTask(todolistId: string, taskId: string, putAfterItemId: string) {
+        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}/reorder`, putAfterItemId);
+    },
+};
+
+// TYPES
+
 export type TodolistType = {
     id: string,
     title: string,
@@ -58,45 +104,4 @@ export type UpdateTaskType = {
     priority: number,
     startDate: string | null,
     deadline: string | null,
-};
-export const todolistsApi = {
-    getTodolists() {
-        return instance.get<Array<TodolistType>>('/todo-lists');
-    },
-    createTodolist(title: string) {
-        const payload = {
-            title,
-        }
-        return instance.post<ResponseType<CreateTodolistDataType>>('/todo-lists', payload);
-    },
-    deleteTodolist(todolistId: string) {
-        return instance.delete<ResponseType>(`/todo-lists/${todolistId}`);
-    },
-    updateTodolist(todolistId: string, title: string) {
-        const payload = {
-            title,
-        }
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}`, payload);
-    },
-    reorderTodolist(todolistId: string, putAfterItemId: string) {
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}/reorder`, putAfterItemId);
-    },
-    getTasks(todolistId: string) {
-        return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks`);
-    },
-    deleteTask(todolistId: string, taskId: string) {
-        return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`);
-    },
-    createTask(todolistId: string, title: string) {
-        const payload = {
-            title,
-        }
-        return instance.post<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks`, payload);
-    },
-    updateTask(todolistId: string, taskId: string, payload: UpdateTaskType) {
-        return instance.put<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, payload);
-    },
-    reorderTask(todolistId: string, taskId: string, putAfterItemId: string) {
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}/reorder`, putAfterItemId);
-    },
 };

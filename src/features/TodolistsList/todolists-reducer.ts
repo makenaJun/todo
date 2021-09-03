@@ -1,21 +1,6 @@
 import {Dispatch} from 'redux';
-import {todolistsApi, TodolistType} from '../api/todolists-api';
-import {ResultCode} from '../api/api';
-
-export type FilterValuesType = 'ALL' | 'ACTIVE' | 'COMPLETED';
-
-export type TodolistDomainType = TodolistType & {
-    filter: FilterValuesType,
-};
-
-type ActionsType =
-    ReturnType<typeof removeTodolistAC>
-    | ReturnType<typeof addTodolistAC>
-    | ReturnType<typeof changeTodolistTitleAC>
-    | ReturnType<typeof changeTodolistFilterAC>
-    | ReturnType<typeof setTodoLists>
-
-export type ToDoListsStateType = Array<TodolistDomainType>;
+import {todolistsApi, TodolistType} from '../../api/todolists-api';
+import {ResultCode} from '../../api/api';
 
 const initialState: ToDoListsStateType = [];
 
@@ -37,17 +22,17 @@ export const todolistsReducer = (state: ToDoListsStateType = initialState, actio
             return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl);
         }
         case 'SET-TODOLIST': {
-            return action.todolists.map(t => {
-                return {
+            return action.todolists.map(t => ({
                     ...t,
                     filter: 'ALL',
-                }
-            });
+                }));
         }
         default:
             return state;
     }
 }
+
+//ACTIONS
 
 export const removeTodolistAC = (id: string) => {
     return {type: 'REMOVE-TODOLIST', id} as const;
@@ -71,13 +56,13 @@ export const setTodoLists = (todolists: Array<TodolistType>) => {
 
 // THUNKS
 
-export const getTodolists = () => async (dispatch: Dispatch) => {
+export const getTodolists = () => async (dispatch: Dispatch<ActionsType>) => {
     const res = await todolistsApi.getTodolists();
 
     dispatch(setTodoLists(res.data));
 };
 
-export const createTodolist = (title: string) => async (dispatch: Dispatch) => {
+export const createTodolist = (title: string) => async (dispatch: Dispatch<ActionsType>) => {
     const res = await todolistsApi.createTodolist(title);
     if (res.data.resultCode === ResultCode.SUCCESS) {
         const todoList = res.data.data.item;
@@ -85,16 +70,37 @@ export const createTodolist = (title: string) => async (dispatch: Dispatch) => {
     }
 };
 
-export const deleteTodolist = (todolistId: string) => async (dispatch: Dispatch) => {
+export const deleteTodolist = (todolistId: string) => async (dispatch: Dispatch<ActionsType>) => {
     const res = await todolistsApi.deleteTodolist(todolistId);
     if (res.data.resultCode === ResultCode.SUCCESS) {
         dispatch(removeTodolistAC(todolistId));
     }
 };
 
-export const updateTodolistTitle = (todolistId: string, title: string) => async (dispatch: Dispatch) => {
+export const updateTodolistTitle = (todolistId: string, title: string) => async (dispatch: Dispatch<ActionsType>) => {
     const res = await todolistsApi.updateTodolist(todolistId, title);
     if (res.data.resultCode === ResultCode.SUCCESS) {
         dispatch(changeTodolistTitleAC(todolistId, title));
     }
 };
+
+//TYPES
+
+export type FilterValuesType = 'ALL' | 'ACTIVE' | 'COMPLETED';
+
+export type TodolistDomainType = TodolistType & {
+    filter: FilterValuesType,
+};
+
+type ActionsType =
+    RemoveTodolistActionType
+    | AddTodolistActionType
+    | ReturnType<typeof changeTodolistTitleAC>
+    | ReturnType<typeof changeTodolistFilterAC>
+    | SetTodolistsActionType
+
+export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
+export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
+export type SetTodolistsActionType = ReturnType<typeof setTodoLists>
+
+export type ToDoListsStateType = Array<TodolistDomainType>;

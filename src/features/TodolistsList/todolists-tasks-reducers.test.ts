@@ -1,14 +1,15 @@
 import {tasksReducer, TasksStateType} from './tasks-reducer';
 import {addTodolistAC, removeTodolistAC, todolistsReducer, ToDoListsStateType} from './todolists-reducer';
-import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
+import {TaskPriorities, TaskStatuses, TodolistType} from '../../api/todolists-api';
 
 
 describe('Tasks and todoLists', () => {
     it('ids should be equals', () => {
         const startTaskState: TasksStateType = {};
         const startTodoListsState: ToDoListsStateType = [];
+        const newTodolist: TodolistType =  {id: 'toDoListId1', title: 'What to learn', order: 0, addedDate: ''}
 
-        const newTodolist = {id: 'toDoListId1', title: 'New todolist', filter: 'ALL', order: 0, addedDate: ''}
+
 
         const action = addTodolistAC(newTodolist);
 
@@ -26,23 +27,33 @@ describe('Tasks and todoLists', () => {
     it('property with todolistId should be deleted', () => {
         const startTaskState: TasksStateType = {
             ['toDoListId1']: [
-                {id: '1', title: 'HTML&CSS', status: TaskStatuses.Completed, completed: false,
+                {
+                    id: '1', title: 'HTML&CSS', status: TaskStatuses.Completed, completed: false,
                     addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
-                    deadline: '', description: '', todoListId: 'toDoListId1'},
-                {id: '2', title: 'JS', status: TaskStatuses.Completed, completed: false,
+                    deadline: '', description: '', todoListId: 'toDoListId1'
+                },
+                {
+                    id: '2', title: 'JS', status: TaskStatuses.Completed, completed: false,
                     addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
-                    deadline: '', description: '', todoListId: 'toDoListId1'},
-                {id: '3', title: 'ReactJS', status: TaskStatuses.New, completed: false,
+                    deadline: '', description: '', todoListId: 'toDoListId1'
+                },
+                {
+                    id: '3', title: 'ReactJS', status: TaskStatuses.New, completed: false,
                     addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
-                    deadline: '', description: '', todoListId: 'toDoListId1'},
+                    deadline: '', description: '', todoListId: 'toDoListId1'
+                },
             ],
             ['toDoListId2']: [
-                {id: '4', title: 'Book', status: TaskStatuses.New, completed: false,
+                {
+                    id: '4', title: 'Book', status: TaskStatuses.New, completed: false,
                     addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
-                    deadline: '', description: '', todoListId: 'toDoListId2'},
-                {id: '5', title: 'Pen', status: TaskStatuses.New, completed: false,
+                    deadline: '', description: '', todoListId: 'toDoListId2'
+                },
+                {
+                    id: '5', title: 'Pen', status: TaskStatuses.New, completed: false,
                     addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
-                    deadline: '', description: '', todoListId: 'toDoListId2'},
+                    deadline: '', description: '', todoListId: 'toDoListId2'
+                },
             ],
         };
         const startTodoListsState: ToDoListsStateType = [
