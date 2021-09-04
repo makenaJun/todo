@@ -57,8 +57,8 @@ describe('Tasks and todoLists', () => {
             ],
         };
         const startTodoListsState: ToDoListsStateType = [
-            {id: 'toDoListId1', title: 'What to learn', filter: 'ALL', order: 0, addedDate: ''},
-            {id: 'toDoListId2', title: 'What to buy', filter: 'ALL', order: 0, addedDate: ''},
+            {id: 'toDoListId1', title: 'What to learn', filter: 'ALL', order: 0, addedDate: '', entityStatus: 'idle'},
+            {id: 'toDoListId2', title: 'What to buy', filter: 'ALL', order: 0, addedDate: '', entityStatus: 'idle'},
         ];
 
         const action = removeTodolistAC('toDoListId1');

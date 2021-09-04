@@ -15,6 +15,8 @@ export const instance = axios.create({
 
 export enum ResultCode {
     SUCCESS = 0,
+    ERROR = 1,
+    CAPTCHA = 10,
 }
 
 export type ResponseType<D = {}> = {

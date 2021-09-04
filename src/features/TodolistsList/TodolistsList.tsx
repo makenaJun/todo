@@ -13,20 +13,21 @@ import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../../app/store';
 
-export const TodolistsList: FC = () => {
+type PropsType = {
+    demo?: boolean,
+}
+
+export const TodolistsList: FC<PropsType> = (props) => {
+    const {demo = false} = props;
+
     const dispatch = useDispatch();
     const toDoLists = useSelector<AppStateType, ToDoListsStateType>(state => state.toDoLists);
 
     useEffect(() => {
+        if (demo) {
+            return;
+        }
         dispatch(getTodolists());
-    }, [dispatch]);
-
-    const changeToDoListTitle = useCallback((toDoListId: string, title: string) => {
-        dispatch(updateTodolistTitle(toDoListId, title));
-    }, [dispatch]);
-
-    const changeFilter = useCallback((toDoListId: string, filter: FilterValuesType,) => {
-        dispatch(changeTodolistFilterAC(toDoListId, filter));
     }, [dispatch]);
 
     const addToDoList = useCallback((title: string) => {
@@ -43,11 +44,9 @@ export const TodolistsList: FC = () => {
                     <Grid item key={toDoList.id}>
                         <Paper style={{'padding': '10px'}}>
                             <Todolist key={toDoList.id}
-                                      id={toDoList.id}
-                                      title={toDoList.title}
-                                      changeFilter={changeFilter}
-                                      changeToDoListTitle={changeToDoListTitle}
-                                      filter={toDoList.filter}/>
+                                      todolist={toDoList}
+                                      demo={demo}
+                            />
                         </Paper>
                     </Grid>)
             })}

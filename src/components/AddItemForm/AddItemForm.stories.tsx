@@ -13,8 +13,10 @@ export default {
 const callback = action(`Button 'add' was pressed inside the form`);
 
 
-const Template: ComponentStory<typeof AddItemForm> = () => {
-    return <AddItemForm addItem={callback}/>;
+export const AddItemFormBaseExample: ComponentStory<typeof AddItemForm> = () => {
+    return <AddItemForm addItem={callback} />;
 }
 
-export const AddItemFormBaseExample = Template.bind({});
+export const AddItemFormDisabledExample: ComponentStory<typeof AddItemForm> = () => {
+    return <AddItemForm addItem={callback} disabled={true} />;
+}

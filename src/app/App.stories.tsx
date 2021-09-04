@@ -12,7 +12,7 @@ export default {
 
 const Template: ComponentStory<typeof App> = () => {
     return (
-        <App/>
+        <App demo={true}/>
     )
 }
 

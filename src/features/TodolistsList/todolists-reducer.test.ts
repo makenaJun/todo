@@ -1,12 +1,13 @@
 import {
     addTodolistAC,
-    changeTodolistFilterAC,
+    changeTodolistFilterAC, setTodoListsEntityStatus,
     changeTodolistTitleAC, FilterValuesType,
     removeTodolistAC, setTodoLists,
     todolistsReducer, ToDoListsStateType
 } from './todolists-reducer';
 import {v1} from 'uuid';
 import {TodolistType} from '../../api/todolists-api';
+import {RequestStatusType} from '../../app/app-reducer';
 
 
 let toDoListId1: string;
@@ -18,8 +19,8 @@ beforeEach(() => {
     toDoListId2 = v1();
 
     startState = [
-        {id: toDoListId1, title: 'What to learn', filter: 'ALL', order: 0, addedDate: ''},
-        {id: toDoListId2, title: 'What to buy', filter: 'ALL', order: 0, addedDate: ''},
+        {id: toDoListId1, title: 'What to learn', filter: 'ALL', order: 0, addedDate: '', entityStatus: 'idle'},
+        {id: toDoListId2, title: 'What to buy', filter: 'ALL', order: 0, addedDate: '', entityStatus: 'idle'},
     ];
 });
 
@@ -81,5 +82,14 @@ describe('toDo Lists', () => {
         expect(endState[0].title).toBe('What to buy');
         expect(endState[0].filter).toBe('ALL');
         expect(endState[1].title).toBe('What to learn');
+    });
+    it('entity status of todolist should be changed', () => {
+        const newStatus: RequestStatusType = 'loading'
+
+        const endState = todolistsReducer(startState, setTodoListsEntityStatus(toDoListId1, newStatus));
+
+        expect(startState).not.toBe(endState);
+        expect(endState[0].entityStatus).toBe(newStatus);
+        expect(endState[1].entityStatus).toBe('idle');
     });
 });

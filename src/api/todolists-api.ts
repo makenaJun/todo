@@ -34,10 +34,10 @@ export const todolistsApi = {
         const payload = {
             title,
         }
-        return instance.post<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks`, payload);
+        return instance.post<ResponseType<CreateUpdateTaskDataType>>(`/todo-lists/${todolistId}/tasks`, payload);
     },
     updateTask(todolistId: string, taskId: string, payload: UpdateTaskType) {
-        return instance.put<ResponseType<CreateTaskDataType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, payload);
+        return instance.put<ResponseType<CreateUpdateTaskDataType>>(`/todo-lists/${todolistId}/tasks/${taskId}`, payload);
     },
     reorderTask(todolistId: string, taskId: string, putAfterItemId: string) {
         return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}/reorder`, putAfterItemId);
@@ -53,11 +53,11 @@ export type TodolistType = {
     order: number,
 };
 
-type CreateTodolistDataType = {
+export type CreateTodolistDataType = {
     item: TodolistType,
 };
 
-type CreateTaskDataType = {
+export type CreateUpdateTaskDataType = {
     item: TaskType,
 };
 

@@ -5,8 +5,11 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void,
+    disabled?: boolean
 }
 export const AddItemForm: FC<AddItemFormPropsType> = React.memo((props) => {
+
+    const {disabled = false} = props;
 
     const [title, setNewTitle] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -40,8 +43,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = React.memo((props) => {
                        onChange={onChangeTitleHandler}
                        value={title}
                        helperText={error}
+                       disabled={disabled}
             />
-            <IconButton onClick={onAddItemHandler} color={'primary'}>
+            <IconButton onClick={onAddItemHandler} color={'primary'} disabled={disabled}>
                 <AddBoxIcon fontSize="large"/>
             </IconButton>
         </div>

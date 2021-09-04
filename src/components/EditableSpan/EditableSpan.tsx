@@ -4,13 +4,17 @@ import {TextField} from '@material-ui/core';
 type PropsType = {
     title: string,
     onChange: (title: string) => void,
+    disabled?: boolean,
 }
 export const EditableSpan: FC<PropsType> = React.memo((props) => {
-    const {title, onChange} = props;
+    const {title, onChange, disabled} = props;
     const [editMode, setEditMode] = useState(false);
     const [localTitle, setLocalTitle] = useState('');
 
     const activateEditMode = () => {
+        if(disabled){
+            return;
+        }
         setLocalTitle(title);
         setEditMode(true);
     };
