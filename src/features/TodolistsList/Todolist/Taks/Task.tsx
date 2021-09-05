@@ -26,7 +26,7 @@ export const Task: FC<PropsType> = React.memo((props) => {
         }
     }
     const changeTaskTitleHandler = useCallback((title: string) =>
-        dispatch(updateTask(task.todoListId, task.id, {title})), [task.todoListId, task.id]);
+        dispatch(updateTask(task.todoListId, task.id, {title})), [dispatch, task.todoListId, task.id]);
 
     return (<div key={task.id}>
             <Checkbox

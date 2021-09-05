@@ -5,14 +5,8 @@ import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Button} from '@material-ui/core';
-import {createTask, deleteTask, getTasks, updateTask} from '../tasks-reducer';
-import {
-    changeTodolistFilterAC,
-    deleteTodolist,
-    FilterValuesType,
-    TodolistDomainType,
-    updateTodolistTitle
-} from '../todolists-reducer';
+import {createTask, getTasks} from '../tasks-reducer';
+import {changeTodolistFilterAC, deleteTodolist, TodolistDomainType, updateTodolistTitle} from '../todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../../../app/store';
 import {Task} from './Taks/Task';
@@ -38,7 +32,7 @@ export const Todolist: FC<PropsType> = React.memo((props) => {
             return;
         }
         dispatch(getTasks(todolist.id));
-    }, [dispatch, todolist.id]);
+    }, [dispatch, todolist.id, demo]);
 
     const addTaskHandler = useCallback((title: string) => {
         dispatch(createTask(todolist.id, title));
@@ -46,14 +40,14 @@ export const Todolist: FC<PropsType> = React.memo((props) => {
 
     const onChangeToDoListTitleHandler = useCallback((title: string) => {
         dispatch(updateTodolistTitle(todolist.id, title));
-    }, [todolist.id]);
+    }, [dispatch, todolist.id]);
 
     const deleteTodoListHandler = useCallback(() => dispatch(deleteTodolist(todolist.id)), [dispatch, todolist.id]);
 
 
-    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, 'ALL')), [todolist.id]);
-    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, 'ACTIVE')), [todolist.id]);
-    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, 'COMPLETED')), [todolist.id]);
+    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, 'ALL')), [dispatch, todolist.id]);
+    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, 'ACTIVE')), [dispatch, todolist.id]);
+    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, 'COMPLETED')), [dispatch, todolist.id]);
 
     let filteredTasks: Array<TaskType>;
     switch (todolist.filter) {

@@ -5,14 +5,8 @@ export const authApi = {
     me() {
         return instance.get<ResponseType<AuthMeDataType>>('/auth/me').then(res => res.data);
     },
-    login(email: string, password: string, rememberMe: boolean, captcha: boolean) {
-        const payload = {
-            email,
-            password,
-            rememberMe,
-            captcha,
-        }
-        return instance.post<ResponseType<LoginDataType>>('/auth/login', payload).then(res => res.data);
+    login(data: LoginParamsType) {
+        return instance.post<ResponseType<LoginDataType>>('/auth/login', data).then(res => res.data);
     },
     logout() {
         return instance.delete<ResponseType>('/auth/login').then(res => res.data);
@@ -21,12 +15,19 @@ export const authApi = {
 
 // TYPES
 
-type AuthMeDataType = {
+export type LoginParamsType = {
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha?: string,
+}
+
+export type AuthMeDataType = {
     id: number,
     email: string,
     login: string,
 };
 
-type LoginDataType = {
-    userId: number,
+export type LoginDataType = {
+    userId?: number,
 };
