@@ -13,7 +13,7 @@ import {ErrorSnackbars} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {AppStateType} from './store';
 import {useDispatch, useSelector} from 'react-redux';
 import {initializeApp, RequestStatusType} from './app-reducer';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
 import {Login} from '../features/Login/Login';
 import {logout} from '../features/Login/auth-reducer';
 
@@ -78,8 +78,12 @@ const App: FC<PropsType> = (props) => {
                 </AppBar>
 
                 <Container fixed style={{'padding': '20px'}}>
-                    <Route path={'/login'} render={() => <Login/>}/>
-                    <Route exact={!demo} path={'/'} render={() => <TodolistsList demo={demo}/>}/>
+                    <Switch>
+                        <Route path={'/login'} render={() => <Login/>}/>
+                        <Route exact={!demo} path={'/'} render={() => <TodolistsList demo={demo}/>}/>
+                        <Route path={'/404'} render={() => <h1>Page Not Found </h1>}/>
+                        <Redirect from={'*'} to={'/404'}/>
+                    </Switch>
                 </Container>
                 {!!error && <ErrorSnackbars/>}
             </div>

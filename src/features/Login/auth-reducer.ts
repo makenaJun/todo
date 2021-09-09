@@ -3,9 +3,12 @@ import {SetAppErrorActionType, setAppStatus, SetAppStatusActionType} from '../..
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {authApi, LoginDataType, LoginParamsType} from '../../api/auth-api';
 import {ResultCode} from '../../api/api';
+import {AppStateType} from '../../app/store';
+import {ClearTodolistsActionType, clearTodolistsData} from '../TodolistsList/todolists-reducer';
 
 const initialState = {
     isLoggedIn: false,
+    captchaUrl: null as null | string,
 };
 
 
@@ -16,6 +19,12 @@ export const authReducer = (state: LoginInitialStateType = initialState, action:
                 ...state,
                 isLoggedIn: action.isLoggedIn,
             };
+        }
+        case 'login/SET-CAPTCHA-URL': {
+            return {
+                ...state,
+                captchaUrl: action.captchaUrl,
+            }
         }
         default:
             return state;
@@ -28,17 +37,36 @@ export const setIsLoggedIn = (isLoggedIn: boolean) => {
     return {type: 'login/SET-IS-LOGGED-IN', isLoggedIn} as const
 };
 
+export const setCaptchaUrl = (captchaUrl: string | null) => {
+    return {type: 'login/SET-CAPTCHA-URL', captchaUrl} as const
+};
+
 // THUNKS
 
-export const login = (data: LoginParamsType) => async (dispatch: ThunkDispatch) => {
+export const login = (data: LoginParamsType) => async (dispatch: ThunkDispatch, getState: () => AppStateType) => {
     try {
         dispatch(setAppStatus('loading'));
-        const res = await authApi.login(data);
+        let requestData = {...data};
+        if (data.captcha === '') {
+            requestData = {
+                email: data.email,
+                password: data.password,
+                rememberMe: data.rememberMe,
+            };
+        }
+        const res = await authApi.login(requestData);
         if (res.resultCode === ResultCode.SUCCESS) {
             dispatch(setIsLoggedIn(true));
-            dispatch(setAppStatus('succeeded'));
+
+            const captchaUrl = getState().auth.captchaUrl;
+            if (!!captchaUrl) {
+                dispatch(setCaptchaUrl(null));
+            }
         } else if (res.resultCode === ResultCode.CAPTCHA) {
-            console.log('GET-CAPTCHA');
+            handleServerAppError<LoginDataType>(dispatch, res);
+            const response = await authApi.getCaptcha();
+            dispatch(setCaptchaUrl(response.url));
+            dispatch(setAppStatus('succeeded'));
         } else {
             handleServerAppError<LoginDataType>(dispatch, res);
         }
@@ -54,6 +82,7 @@ export const logout = () => async (dispatch: ThunkDispatch) => {
         if (res.resultCode === ResultCode.SUCCESS) {
             dispatch(setIsLoggedIn(false));
             dispatch(setAppStatus('succeeded'));
+            dispatch(clearTodolistsData());
         } else {
             handleServerAppError(dispatch, res);
         }
@@ -69,5 +98,7 @@ export type setIsLoggedInActionType = ReturnType<typeof setIsLoggedIn>
 
 type ActionsType =
     setIsLoggedInActionType
+    | ReturnType<typeof setCaptchaUrl>
+    | ClearTodolistsActionType
 
 export type LoginInitialStateType = typeof initialState;

@@ -1,5 +1,11 @@
 import {tasksReducer, TasksStateType} from './tasks-reducer';
-import {addTodolistAC, removeTodolistAC, todolistsReducer, ToDoListsStateType} from './todolists-reducer';
+import {
+    addTodolistAC,
+    clearTodolistsData,
+    removeTodolistAC,
+    todolistsReducer,
+    ToDoListsStateType
+} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses, TodolistType} from '../../api/todolists-api';
 
 
@@ -74,5 +80,30 @@ describe('Tasks and todoLists', () => {
         expect(keys.length).toBe(1);
         expect(endTodoListsState.length).toBe(1);
         expect(idFromTodoLists).toBe('toDoListId2');
+    });
+
+    it('data should be cleared', () => {
+        const startTaskState: TasksStateType = {
+            ['toDoListId1']: [
+                {
+                    id: '1', title: 'HTML&CSS', status: TaskStatuses.Completed, completed: false,
+                    addedDate: '', order: 0, startDate: '', priority: TaskPriorities.Low,
+                    deadline: '', description: '', todoListId: 'toDoListId1'
+                },
+            ],
+        };
+        const startTodoListsState: ToDoListsStateType = [
+            {id: 'toDoListId1', title: 'What to learn', filter: 'ALL', order: 0, addedDate: '', entityStatus: 'idle'},
+        ];
+
+        const action = clearTodolistsData();
+
+        const endTodoListsState = todolistsReducer(startTodoListsState, action);
+        const endTasksState = tasksReducer(startTaskState, action);
+
+        const keys = Object.keys(endTasksState);
+
+        expect(keys.length).toBe(0);
+        expect(endTodoListsState.length).toBe(0);
     });
 })

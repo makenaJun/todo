@@ -3,7 +3,7 @@ import {
     changeTodolistFilterAC, setTodoListsEntityStatus,
     changeTodolistTitleAC, FilterValuesType,
     removeTodolistAC, setTodoLists,
-    todolistsReducer, ToDoListsStateType
+    todolistsReducer, ToDoListsStateType, clearTodolistsData
 } from './todolists-reducer';
 import {v1} from 'uuid';
 import {TodolistType} from '../../api/todolists-api';
@@ -91,5 +91,12 @@ describe('toDo Lists', () => {
         expect(startState).not.toBe(endState);
         expect(endState[0].entityStatus).toBe(newStatus);
         expect(endState[1].entityStatus).toBe('idle');
+    });
+    it('todolist should be cleared', () => {
+
+        const endState = todolistsReducer(startState, clearTodolistsData());
+
+        expect(startState).not.toBe(endState);
+        expect(endState.length).toBe(0);
     });
 });

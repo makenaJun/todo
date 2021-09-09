@@ -44,7 +44,6 @@ export const TodolistsList: FC<PropsType> = (props) => {
                         <Paper style={{'padding': '10px'}}>
                             <Todolist key={toDoList.id}
                                       todolist={toDoList}
-                                      demo={demo}
                             />
                         </Paper>
                     </Grid>)

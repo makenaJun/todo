@@ -1,11 +1,11 @@
-import React, {FC, useCallback, useEffect} from 'react';
+import React, {FC, useCallback} from 'react';
 import '../../../app/App.css';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Button} from '@material-ui/core';
-import {createTask, getTasks} from '../tasks-reducer';
+import {createTask} from '../tasks-reducer';
 import {changeTodolistFilterAC, deleteTodolist, TodolistDomainType, updateTodolistTitle} from '../todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '../../../app/store';
@@ -14,25 +14,16 @@ import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 
 type PropsType = {
     todolist: TodolistDomainType,
-    demo?: boolean,
 }
 
 export const Todolist: FC<PropsType> = React.memo((props) => {
     const {
         todolist,
-        demo = false,
     } = props;
 
 
     const dispatch = useDispatch();
     const tasks = useSelector<AppStateType, Array<TaskType>>(state => state.tasks[todolist.id]);
-
-    useEffect(() => {
-        if (demo) {
-            return;
-        }
-        dispatch(getTasks(todolist.id));
-    }, [dispatch, todolist.id, demo]);
 
     const addTaskHandler = useCallback((title: string) => {
         dispatch(createTask(todolist.id, title));

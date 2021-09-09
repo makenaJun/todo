@@ -11,6 +11,9 @@ export const authApi = {
     logout() {
         return instance.delete<ResponseType>('/auth/login').then(res => res.data);
     },
+    getCaptcha() {
+        return instance.get<CaptchaDataType>('/security/get-captcha-url').then(res => res.data);
+    },
 }
 
 // TYPES
@@ -30,4 +33,8 @@ export type AuthMeDataType = {
 
 export type LoginDataType = {
     userId?: number,
+};
+
+export type CaptchaDataType = {
+    url: string,
 };

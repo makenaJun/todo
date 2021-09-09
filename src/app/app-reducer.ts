@@ -47,7 +47,6 @@ export const initializeApp = () => async (dispatch: Dispatch<ActionsType | setIs
         const res = await authApi.me();
         if (res.resultCode === ResultCode.SUCCESS) {
             dispatch(setIsLoggedIn(true));
-        } else {
         }
         dispatch(setAppIsInitialized(true));
     } catch (error) {

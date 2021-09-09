@@ -1,6 +1,6 @@
 import {v1} from 'uuid';
 import {addTaskAC, removeTaskAC, setTasks, tasksReducer, TasksStateType, updateTaskAC} from './tasks-reducer';
-import {addTodolistAC, removeTodolistAC, setTodoLists} from './todolists-reducer';
+import {addTodolistAC, clearTodolistsData, removeTodolistAC, setTodoLists} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../../api/todolists-api';
 
 
@@ -200,5 +200,18 @@ describe('Tasks', () => {
         expect(startState).not.toBe(endState);
         expect(endState['toDoListId2'].length).toBe(2);
         expect(endState['toDoListId1'].length).toBe(0);
+    });
+    it('tasks should be added for todolist', () => {
+
+        const action = clearTodolistsData();
+        const endState = tasksReducer({
+            'toDoListId1': [],
+            'toDoListId2': []
+        }, action);
+
+        const keys = Object.keys(endState);
+
+        expect(startState).not.toBe(endState);
+        expect(keys.length).toBe(0);
     });
 });

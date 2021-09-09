@@ -11,6 +11,7 @@ type LoginFormValues = {
     email: string,
     password: string,
     rememberMe: boolean,
+    captcha: string,
 }
 
 const SignupSchema = Yup.object().shape({
@@ -25,12 +26,14 @@ export const Login = () => {
     const dispatch = useDispatch();
 
     const isLoggedIn = useSelector<AppStateType, boolean>(state => state.auth.isLoggedIn);
+    const captchaUrl = useSelector<AppStateType, string | null>(state => state.auth.captchaUrl);
 
     const formik = useFormik<LoginFormValues>({
         initialValues: {
             email: '',
             password: '',
             rememberMe: false,
+            captcha: '',
         },
         validationSchema: SignupSchema,
         onSubmit: values => {
@@ -60,16 +63,20 @@ export const Login = () => {
                         <TextField
                             label="Email"
                             margin="normal"
+                            error={!!(formik.errors.email && formik.touched.email)}
                             {...formik.getFieldProps('email')}
                         />
-                        {formik.errors.email && <div>{formik.errors.email}</div>}
+                        {formik.errors.email && formik.touched.email &&
+                        <div style={{color: 'red'}}>{formik.errors.email}</div>}
                         <TextField
+                            error={!!(formik.errors.password && formik.touched.password)}
                             type="password"
                             label="Password"
                             margin="normal"
                             {...formik.getFieldProps('password')}
                         />
-                        {formik.errors.password && <div>{formik.errors.password}</div>}
+                        {formik.errors.password && formik.touched.password &&
+                        <div style={{color: 'red'}}>{formik.errors.password}</div>}
                         <FormControlLabel
                             label={'Remember me'}
                             control={<Checkbox color="primary"
@@ -77,6 +84,15 @@ export const Login = () => {
                                                checked={formik.values.rememberMe}
                             />}
                         />
+                        {captchaUrl && <>
+                            <img src={captchaUrl} alt={'Captcha Img'}/>
+                            <TextField
+                                label="Captcha"
+                                margin="normal"
+                                {...formik.getFieldProps('captcha')}
+                            />
+                        </>
+                        }
                         <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
                     </FormGroup>
                 </FormControl>
